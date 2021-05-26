@@ -33,3 +33,28 @@ class Game:
         # Carregar e definir a imagem de fundo
         background_image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(background_image, (altura, peso))
+
+    def run_game_loop(self, level_speed):
+        game_over = False
+        ganhou = False
+        direction = 0
+        player_character = PlayerCharacter('personagem_m.png', 375, 700, 50, 50)
+        carro_0 = Carro('carro_dp.png', 20, 600, 50, 50)
+        # aumento de velocidade
+        carro_0.SPEED *= level_speed
+
+
+
+        # criação de outro carro
+        carro_1 = Carro('carro_pf.png', self.width - 40, 400, 50, 50)
+        carro_1.SPEED *= level_speed
+
+
+
+        # criação de outro carro
+        carro_2 = Carro('carro_pi.png', 20,200, 50, 50)
+        carro_2.SPEED *= level_speed
+      
+        diploma = Diploma('diploma.png', 375, 50, 50, 50)
+        chapeu = Chapeu('chapeu_formatura.png', 375, 50, 50)
+
