@@ -6,19 +6,16 @@
 
 import pygame
 
-
 #Tamanho da tela
 
 SCREEN_TITLE = 'Crossy Road'
 
 SCREEN_WIDTH = 800
-
 SCREEN_HEIGHT = 800
 
 #Cores
 
 WHITE_COLOR = (255, 255, 255)
-
 BLACK_COLOR = (0, 0, 0)
 
 #Tempo
