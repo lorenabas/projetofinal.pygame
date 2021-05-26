@@ -13,4 +13,3 @@ clock = pygame.time.Clock()
 # Fonte para o texto do jogo
 pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
-#
