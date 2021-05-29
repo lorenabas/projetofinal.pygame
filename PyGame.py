@@ -58,3 +58,27 @@ class Game:
         diploma = Diploma('diploma.png', 375, 50, 50, 50)
         chapeu = Chapeu('chapeu_formatura.png', 375, 50, 50)
 
+            # Refaz o plano de fundo
+            self.game_screen.fill(WHITE_COLOR)
+            self.game_screen.blit(self.image, (0, 0))
+
+            # desenha o diploma e o chapeu
+            diploma.draw(self.game_screen)
+            chapeu.draw(self.game_screen)
+            
+            # muda a posição do jogador
+            player_character.move(direction, self.height)
+            # coloca o jogador na nova posição
+            player_character.draw(self.game_screen)
+
+            # move a posição do carro
+            carro_0.move(self.width)
+            carro_0.draw(self.game_screen)
+            
+            # adcionar novos carros
+            if level_speed > 2:
+                carro_1.move(self.width)
+                carro_1.draw(self.game_screen)
+            if level_speed > 4:
+                carro_2.move(self.width)
+                carro_2.draw(self.game_screen)
