@@ -40,16 +40,13 @@ class Game:
         direction = 0
         player_character = PlayerCharacter('personagem_m.png', 375, 700, 50, 50)
         carro_0 = Carro('carro_dp.png', 20, 600, 50, 50)
+
         # aumento de velocidade
         carro_0.SPEED *= level_speed
-
-
 
         # criação de outro carro
         carro_1 = Carro('carro_pf.png', self.width - 40, 400, 50, 50)
         carro_1.SPEED *= level_speed
-
-
 
         # criação de outro carro
         carro_2 = Carro('carro_pi.png', 20,200, 50, 50)
@@ -58,27 +55,46 @@ class Game:
         diploma = Diploma('diploma.png', 375, 50, 50, 50)
         chapeu = Chapeu('chapeu_formatura.png', 375, 50, 50)
 
-            # Refaz o plano de fundo
-            self.game_screen.fill(WHITE_COLOR)
-            self.game_screen.blit(self.image, (0, 0))
+        # Loop principal, atualiza o jogo até que is_game_over = True
+        while not is_game_over:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    is_game_over = True
+                # Verifica se a tecla está apertada
+                elif event.type == pygame.KEYDOWN:
+                    # Mexe para cima se a seta para cima está sendo apertada
+                    if event.key == pygame.K_UP:
+                        direction = 1
+                    # Mexe para baixo se a seta para baixo está sendo apertada
+                    elif event.key == pygame.K_DOWN:
+                        direction = -1
+                # Verifica quando a tecla deixa é solta
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                        direction = 0
+                print(event)
 
-            # desenha o diploma e o chapeu
-            diploma.draw(self.game_screen)
-            chapeu.draw(self.game_screen)
-            
-            # muda a posição do jogador
-            player_character.move(direction, self.height)
-            # coloca o jogador na nova posição
-            player_character.draw(self.game_screen)
+                # Refaz o plano de fundo
+                self.game_screen.fill(WHITE_COLOR)
+                self.game_screen.blit(self.image, (0, 0))
 
-            # move a posição do carro
-            carro_0.move(self.width)
-            carro_0.draw(self.game_screen)
+                # desenha o diploma e o chapeu
+                diploma.draw(self.game_screen)
+                chapeu.draw(self.game_screen)
             
-            # adcionar novos carros
-            if level_speed > 2:
-                carro_1.move(self.width)
-                carro_1.draw(self.game_screen)
-            if level_speed > 4:
-                carro_2.move(self.width)
-                carro_2.draw(self.game_screen)
+                # muda a posição do jogador
+                player_character.move(direction, self.height)
+                # coloca o jogador na nova posição
+                player_character.draw(self.game_screen)
+
+                # move a posição do carro
+                carro_0.move(self.width)
+                carro_0.draw(self.game_screen)
+            
+                # adcionar novos carros
+                if level_speed > 2:
+                    carro_1.move(self.width)
+                    carro_1.draw(self.game_screen)
+                if level_speed > 4:
+                    carro_2.move(self.width)
+                    carro_2.draw(self.game_screen)
