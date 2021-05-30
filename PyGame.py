@@ -84,7 +84,7 @@ class Game:
                 chapeu.draw(self.game_screen)
             
                 # muda a posição do jogador
-                player_character.move(direction, self.height)
+                player_character.movimento(direction, self.height)
                 # coloca o jogador na nova posição
                 player_character.draw(self.game_screen)
 
@@ -136,7 +136,7 @@ class Game:
 class ElementoJogo:
 
     def __init__(self, image_path, x, y, width, height):
-        # Importar a imagem do jogador e ajustar o tamanho da imagem
+        # Importar a imagem e ajustar o tamanho da imagem
         imagem_elemento = pygame.image.load(image_path)
         self.imagem = pygame.transform.scale(imagem_elemento, (width, height))
 
@@ -149,3 +149,38 @@ class ElementoJogo:
     #Desenha o elemento ao fazer blit no plano de fundo - game_screen
     def draw(self, background):
         background.blit(self.imagem, (self.x_pos, self.y_pos))
+
+# Cria classe da personagem do jogador
+class PlayerCharacter(ElementoJogo):
+
+    # Quantos espaços/quadrados o personagem se mexe por segundo
+    SPEED = 10
+
+    def __init__(self, image_path, x, y, width, height):
+        super().__init__(image_path, x, y, width, height)
+
+    # Função para mexer a personagem - vai para cima se a direção > 0, e para baixo se a direção for < 0
+    def movimento(self, direction, max_height):
+        if direction > 0:
+            self.y_pos -= self.SPEED
+        elif direction < 0:
+            self.y_pos += self.SPEED
+
+        # Verifica que a personagem não sai da tela
+        if self.y_pos >= max_height - 40:
+            self.y_pos = max_height -40
+    
+    # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
+    # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
+    def verifica_colisao(self, other_body):
+        if self.y_pos > other_body.y_pos + other_body.height:
+            return False
+        elif self.y_pos + self.height < other_body.y_pos:
+            return False
+        
+        if self.x_pos > other_body.x_pos + other_body.width:
+            return False
+        elif self.x_pos + self.width < other_body.x_pos:
+            return False
+
+        return True
