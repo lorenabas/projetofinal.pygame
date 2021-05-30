@@ -57,10 +57,10 @@ class Game:
         chapeu = Chapeu('chapeu_formatura.png', 375, 50, 50)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
-        while not is_game_over:
+        while not game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    is_game_over = True
+                    game_over = True
                 # Verifica se a tecla está apertada
                 elif event.type == pygame.KEYDOWN:
                     # Mexe para cima se a seta para cima está sendo apertada
@@ -127,7 +127,25 @@ class Game:
 
             # Recomeça o loop do jogo se o jogador ganhar
             # Termina o loop do jogo se o jogador perder
-            if did_win:
+            if ganhou:
                 self.run_game_loop(level_speed + 0.5)
             else:
                 return
+
+# Cria classe de elemento do jogo para definir outras classes dos outros elementos do jogo
+class ElementoJogo:
+
+    def __init__(self, image_path, x, y, width, height):
+        # Importar a imagem do jogador e ajustar o tamanho da imagem
+        imagem_elemento = pygame.image.load(image_path)
+        self.imagem = pygame.transform.scale(imagem_elemento, (width, height))
+
+        self.x_pos = x
+        self.y_pos = y
+
+        self.width = width
+        self.height = height
+
+    #Desenha o elemento ao fazer blit no plano de fundo - game_screen
+    def draw(self, background):
+        background.blit(self.imagem, (self.x_pos, self.y_pos))
