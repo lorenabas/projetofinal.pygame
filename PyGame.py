@@ -103,7 +103,7 @@ class Game:
 
                 # Termina o jogo se houver colisão entre o jogador e o carro ou diploma e chapeu
                 # Feche o jogo se perder e reinicie o loop do jogo se vencer
-                if player_character.detect_collision(carro_0):
+                if player_character.verifica_colisao(carro_0):
                     game_over = True
                     ganhou = False
                     text = font.render('You Lose!', True, BLACK_COLOR)
@@ -111,7 +111,7 @@ class Game:
                     pygame.display.update()
                     clock.tick(1)
                     break
-                elif player_character.detect_collision(diploma, chapeu):
+                elif player_character.verifica_colisao(diploma, chapeu):
                     game_over = True
                     ganhou = True
                     text = font.render('You Win!', True, BLACK_COLOR)
