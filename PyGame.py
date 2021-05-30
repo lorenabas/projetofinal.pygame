@@ -26,7 +26,7 @@ class Game:
 
         #Cria a janela de tamanho especificado para exibir o jogo
         self.game_screen = pygame.display.set_mode((altura, peso))
-        #set the game window color to white
+        # definir a cor da janela do jogo para branco
         self.game_screen.fill(WHITE_COLOR)
         pygame.display.set_caption(título)
 
