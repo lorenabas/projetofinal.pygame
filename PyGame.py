@@ -38,6 +38,7 @@ class Game:
         game_over = False
         ganhou = False
         direction = 0
+
         player_character = PlayerCharacter('personagem_m.png', 375, 700, 50, 50)
         carro_0 = Carro('carro_dp.png', 20, 600, 50, 50)
 
@@ -98,3 +99,28 @@ class Game:
                 if level_speed > 4:
                     carro_2.move(self.width)
                     carro_2.draw(self.game_screen)
+
+
+                # End game if collision between player and enemy or treasure
+                # Close game if we lose and restart game loop if we win
+                if player_character.detect_collision(carro_0):
+                    game_over = True
+                    ganhou = False
+                    text = font.render('You Lose!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    break
+                elif player_character.detect_collision(diploma, chapeu):
+                    game_over = True
+                    ganhou = True
+                    text = font.render('You Win!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    break
+
+            #update all game graphics
+            pygame.display.update()
+            #Tick the clock to update everything within the game
+            clock.tick(self.TICK_RATE)
