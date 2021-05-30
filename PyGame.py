@@ -101,8 +101,8 @@ class Game:
                     carro_2.draw(self.game_screen)
 
 
-                # End game if collision between player and enemy or treasure
-                # Close game if we lose and restart game loop if we win
+                # Termina o jogo se houver colisão entre o jogador e o carro ou diploma e chapeu
+                # Feche o jogo se perder e reinicie o loop do jogo se vencer
                 if player_character.detect_collision(carro_0):
                     game_over = True
                     ganhou = False
@@ -120,7 +120,7 @@ class Game:
                     clock.tick(1)
                     break
 
-            #update all game graphics
+            # atualizar todos os gráficos do jogo
             pygame.display.update()
-            #Tick the clock to update everything within the game
+            # Clique no relógio para atualizar tudo dentro do jogo
             clock.tick(self.TICK_RATE)
