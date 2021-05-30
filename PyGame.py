@@ -124,3 +124,10 @@ class Game:
             pygame.display.update()
             # Clique no relógio para atualizar tudo dentro do jogo
             clock.tick(self.TICK_RATE)
+
+            # Recomeça o loop do jogo se o jogador ganhar
+            # Termina o loop do jogo se o jogador perder
+            if did_win:
+                self.run_game_loop(level_speed + 0.5)
+            else:
+                return
