@@ -84,17 +84,17 @@ class Game:
                 chapeu.draw(self.game_screen)
             
                 # muda a posição do jogador
-                player_character.movimento(direction, self.height)
+                player_character.movimento(direction, self.peso)
                 # coloca o jogador na nova posição
                 player_character.draw(self.game_screen)
 
                 # move a posição do carro
-                carro_0.move(self.width)
+                carro_0.move(self.peso)
                 carro_0.draw(self.game_screen)
             
                 # adcionar novos carros
                 if level_speed > 2:
-                    carro_1.move(self.width)
+                    carro_1.move(self.peso)
                     carro_1.draw(self.game_screen)
                 if level_speed > 4:
                     carro_2.move(self.width)
@@ -135,16 +135,16 @@ class Game:
 # Cria classe de elemento do jogo para definir outras classes dos outros elementos do jogo
 class ElementoJogo:
 
-    def __init__(self, image_path, x, y, width, height):
+    def __init__(self, image_path, x, y, altura, peso):
         # Importar a imagem e ajustar o tamanho da imagem
         imagem_elemento = pygame.image.load(image_path)
-        self.imagem = pygame.transform.scale(imagem_elemento, (width, height))
+        self.imagem = pygame.transform.scale(imagem_elemento, (altura, peso))
 
         self.x_pos = x
         self.y_pos = y
 
-        self.width = width
-        self.height = height
+        self.altura = altura
+        self.peso = peso
 
     #Desenha o elemento ao fazer blit no plano de fundo - game_screen
     def draw(self, background):
@@ -156,31 +156,49 @@ class PlayerCharacter(ElementoJogo):
     # Quantos espaços/quadrados o personagem se mexe por segundo
     SPEED = 10
 
-    def __init__(self, image_path, x, y, width, height):
-        super().__init__(image_path, x, y, width, height)
+    def __init__(self, image_path, x, y, altura, peso):
+        super().__init__(image_path, x, y, altura, peso)
 
     # Função para mexer a personagem - vai para cima se a direção > 0, e para baixo se a direção for < 0
-    def movimento(self, direction, max_height):
+    def movimento(self, direction, max_altura):
         if direction > 0:
             self.y_pos -= self.SPEED
         elif direction < 0:
             self.y_pos += self.SPEED
 
         # Verifica que a personagem não sai da tela
-        if self.y_pos >= max_height - 40:
-            self.y_pos = max_height -40
+        if self.y_pos >= max_altura - 40:
+            self.y_pos = max_altura -40
     
     # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
     # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
     def verifica_colisao(self, other_body):
-        if self.y_pos > other_body.y_pos + other_body.height:
+        if self.y_pos > other_body.y_pos + other_body.altura:
             return False
-        elif self.y_pos + self.height < other_body.y_pos:
+        elif self.y_pos + self.altura < other_body.y_pos:
             return False
         
-        if self.x_pos > other_body.x_pos + other_body.width:
+        if self.x_pos > other_body.x_pos + other_body.peso:
             return False
-        elif self.x_pos + self.width < other_body.x_pos:
+        elif self.x_pos + self.peso < other_body.x_pos:
             return False
 
         return True
+
+
+# Classe para representar os carros não controlados pelo jogador
+class CarroCharacter(GameObject):
+
+        # Quantas peças o carro se move por segundo
+        SPEED = 10
+
+        def __init__(self, image_path, x, y, peso, altura:
+            super().__init__(image_path, x, y, peso, altura)
+
+        # A função Mover irá mover o carro para a direita e esquerda automaticamente
+        def move(self, max_peso):
+            if self.x_pos <= 20:
+                self.SPEED = abs(self.SPEED)
+            elif self.x_pos >= max_peso - 40:
+                self.SPEED = -abs(self.SPEED)
+            self.x_pos += self.SPEED
