@@ -198,3 +198,12 @@ class CarroCharacter(GameObject):
         elif self.x_pos >= max_largura - 40:
             self.SPEED = -abs(self.SPEED)
         self.x_pos += self.SPEED
+# Inicializa pygame
+pygame.init()
+
+new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT)
+new_game.run_game_loop(1)
+
+# Sai do jogo
+pygame.quit()
+quit()
