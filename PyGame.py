@@ -19,7 +19,7 @@ class Game:
     FPS = 60    
     
     #Inicializador para classe de jogo para configurar largura, altura e título
-    def __init__(self, image_path, título, altura, largura):
+    def __init__(self, image_path, título, largura, altura):
         self.título = título
         self.altura = altura
         self.largura = largura
@@ -46,7 +46,7 @@ class Game:
         carro_0.SPEED *= level_speed
 
         # criação de outro carro
-        carro_1 = CarroCharacter('carro_pf.png', self.width - 40, 400, 50, 50)
+        carro_1 = CarroCharacter('carro_pf.png', self.largura - 40, 400, 50, 50)
         carro_1.SPEED *= level_speed
 
         # criação de outro carro
@@ -54,7 +54,7 @@ class Game:
         carro_2.SPEED *= level_speed
       
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
-        chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50)
+        chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
@@ -111,10 +111,34 @@ class Game:
                     pygame.display.update()
                     clock.tick(1)
                     break
-                elif player_character.verifica_colisao(diploma, chapeu):
+                elif player_character.verifica_colisao(carro_1):
+                    game_over = True
+                    ganhou = False
+                    text = font.render('You Lose!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    break
+                elif player_character.verifica_colisao(carro_2):
+                    game_over = True
+                    ganhou = False
+                    text = font.render('You Lose!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    break
+                elif player_character.verifica_colisao(diploma):
                     game_over = True
                     ganhou = True
                     text = font.render('You Win!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    break
+                elif player_character.verifica_colisao(chapeu):
+                    game_over = True
+                    ganhou = False
+                    text = font.render('You Lose!', True, BLACK_COLOR)
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
                     clock.tick(1)
