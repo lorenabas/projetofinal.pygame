@@ -189,8 +189,7 @@ class CarroCharacter(GameObject):
     # Quantas peças o carro se move por segundo
     SPEED = 10
     def __init__(self, image_path, x, y, largura, altura):
-
-    super().__init__(image_path, x, y, largura, altura)
+        super().__init__(image_path, x, y, largura, altura)
     # A função Mover irá mover o carro para a direita e esquerda automaticamente
     def move(self, max_largura):
         if self.x_pos <= 20:
