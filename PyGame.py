@@ -75,86 +75,86 @@ class Game:
                         direction = 0
                 print(event)
 
-                # Refaz o plano de fundo
-                self.game_screen.fill(WHITE_COLOR)
-                self.game_screen.blit(self.image, (0, 0))
+            # Refaz o plano de fundo
+            self.game_screen.fill(WHITE_COLOR)
+            self.game_screen.blit(self.image, (0, 0))
 
-                # desenha o diploma e o chapeu
-                diploma.draw(self.game_screen)
-                chapeu.draw(self.game_screen)
-            
-                # muda a posição do jogador
-                player_character.movimento(direction, self.largura)
-                # coloca o jogador na nova posição
-                player_character.draw(self.game_screen)
+            # desenha o diploma e o chapeu
+            diploma.draw(self.game_screen)
+            chapeu.draw(self.game_screen)
+        
+            # muda a posição do jogador
+            player_character.movimento(direction, self.largura)
+            # coloca o jogador na nova posição
+            player_character.draw(self.game_screen)
 
-                # move a posição do carro
-                carro_0.move(self.largura)
-                carro_0.draw(self.game_screen)
-            
-                # adcionar novos carros
-                if level_speed > 2:
-                    carro_1.move(self.largura)
-                    carro_1.draw(self.game_screen)
-                if level_speed > 4:
-                    carro_2.move(self.largura)
-                    carro_2.draw(self.game_screen)
+            # move a posição do carro
+            carro_0.move(self.largura)
+            carro_0.draw(self.game_screen)
+        
+            # adcionar novos carros
+            if level_speed > 2:
+                carro_1.move(self.largura)
+                carro_1.draw(self.game_screen)
+            if level_speed > 4:
+                carro_2.move(self.largura)
+                carro_2.draw(self.game_screen)
 
 
-                # Termina o jogo se houver colisão entre o jogador e o carro ou diploma e chapeu
-                # Feche o jogo se perder e reinicie o loop do jogo se vencer
-                if player_character.verifica_colisao(carro_0):
-                    game_over = True
-                    ganhou = False
-                    text = font.render('You Lose!', True, BLACK_COLOR)
-                    self.game_screen.blit(text, (275, 350))
-                    pygame.display.update()
-                    clock.tick(1)
-                    break
-                elif player_character.verifica_colisao(carro_1):
-                    game_over = True
-                    ganhou = False
-                    text = font.render('You Lose!', True, BLACK_COLOR)
-                    self.game_screen.blit(text, (275, 350))
-                    pygame.display.update()
-                    clock.tick(1)
-                    break
-                elif player_character.verifica_colisao(carro_2):
-                    game_over = True
-                    ganhou = False
-                    text = font.render('You Lose!', True, BLACK_COLOR)
-                    self.game_screen.blit(text, (275, 350))
-                    pygame.display.update()
-                    clock.tick(1)
-                    break
-                elif player_character.verifica_colisao(diploma):
-                    game_over = True
-                    ganhou = True
-                    text = font.render('You Win!', True, BLACK_COLOR)
-                    self.game_screen.blit(text, (275, 350))
-                    pygame.display.update()
-                    clock.tick(1)
-                    break
-                elif player_character.verifica_colisao(chapeu):
-                    game_over = True
-                    ganhou = False
-                    text = font.render('You Lose!', True, BLACK_COLOR)
-                    self.game_screen.blit(text, (275, 350))
-                    pygame.display.update()
-                    clock.tick(1)
-                    break
+            # Termina o jogo se houver colisão entre o jogador e o carro ou diploma e chapeu
+            # Feche o jogo se perder e reinicie o loop do jogo se vencer
+            if player_character.verifica_colisao(carro_0):
+                game_over = True
+                ganhou = False
+                text = font.render('You Lose!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
+            elif player_character.verifica_colisao(carro_1):
+                game_over = True
+                ganhou = False
+                text = font.render('You Lose!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
+            elif player_character.verifica_colisao(carro_2):
+                game_over = True
+                ganhou = False
+                text = font.render('You Lose!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
+            elif player_character.verifica_colisao(diploma):
+                game_over = True
+                ganhou = True
+                text = font.render('You Win!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
+            elif player_character.verifica_colisao(chapeu):
+                game_over = True
+                ganhou = False
+                text = font.render('You Lose!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
 
             # atualizar todos os gráficos do jogo
             pygame.display.update()
             # Clique no relógio para atualizar tudo dentro do jogo
             clock.tick(self.FPS)
 
-            # Recomeça o loop do jogo se o jogador ganhar
-            # Termina o loop do jogo se o jogador perder
-            if ganhou:
-                self.run_game_loop(level_speed + 0.5)
-            else:
-                return
+        # Recomeça o loop do jogo se o jogador ganhar
+        # Termina o loop do jogo se o jogador perder
+        if ganhou:
+            self.run_game_loop(level_speed + 0.5)
+        else:
+            return
 
 # Cria classe de elemento do jogo para definir outras classes dos outros elementos do jogo
 class Elementojogo:
