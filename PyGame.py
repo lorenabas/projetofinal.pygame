@@ -19,20 +19,20 @@ class Game:
     FPS = 60    
     
     #Inicializador para classe de jogo para configurar largura, altura e título
-    def __init__(self, image_path, título, altura, peso):
+    def __init__(self, image_path, título, altura, largura):
         self.título = título
         self.altura = altura
-        self.peso = peso
+        self.largura = largura
 
         #Cria a janela de tamanho especificado para exibir o jogo
-        self.game_screen = pygame.display.set_mode((altura, peso))
+        self.game_screen = pygame.display.set_mode((largura, altura))
         # definir a cor da janela do jogo para branco
         self.game_screen.fill(WHITE_COLOR)
         pygame.display.set_caption(título)
 
         # Carregar e definir a imagem de fundo
         background_image = pygame.image.load(image_path)
-        self.image = pygame.transform.scale(background_image, (altura, peso))
+        self.image = pygame.transform.scale(background_image, (largura, altura))
 
     def run_game_loop(self, level_speed):
         game_over = False
@@ -84,20 +84,20 @@ class Game:
                 chapeu.draw(self.game_screen)
             
                 # muda a posição do jogador
-                player_character.movimento(direction, self.peso)
+                player_character.movimento(direction, self.largura)
                 # coloca o jogador na nova posição
                 player_character.draw(self.game_screen)
 
                 # move a posição do carro
-                carro_0.move(self.peso)
+                carro_0.move(self.largura)
                 carro_0.draw(self.game_screen)
             
                 # adcionar novos carros
                 if level_speed > 2:
-                    carro_1.move(self.peso)
+                    carro_1.move(self.largura)
                     carro_1.draw(self.game_screen)
                 if level_speed > 4:
-                    carro_2.move(self.width)
+                    carro_2.move(self.largura)
                     carro_2.draw(self.game_screen)
 
 
@@ -135,16 +135,16 @@ class Game:
 # Cria classe de elemento do jogo para definir outras classes dos outros elementos do jogo
 class ElementoJogo:
 
-    def __init__(self, image_path, x, y, altura, peso):
+    def __init__(self, image_path, x, y, largura, altura):
         # Importar a imagem e ajustar o tamanho da imagem
         imagem_elemento = pygame.image.load(image_path)
-        self.imagem = pygame.transform.scale(imagem_elemento, (altura, peso))
+        self.imagem = pygame.transform.scale(imagem_elemento, (largura, altura))
 
         self.x_pos = x
         self.y_pos = y
 
         self.altura = altura
-        self.peso = peso
+        self.largura = largura
 
     #Desenha o elemento ao fazer blit no plano de fundo - game_screen
     def draw(self, background):
@@ -156,8 +156,8 @@ class PlayerCharacter(ElementoJogo):
     # Quantos espaços/quadrados o personagem se mexe por segundo
     SPEED = 10
 
-    def __init__(self, image_path, x, y, altura, peso):
-        super().__init__(image_path, x, y, altura, peso)
+    def __init__(self, image_path, x, y, largura, altura):
+        super().__init__(image_path, x, y, largura, altura)
 
     # Função para mexer a personagem - vai para cima se a direção > 0, e para baixo se a direção for < 0
     def movimento(self, direction, max_altura):
@@ -178,9 +178,9 @@ class PlayerCharacter(ElementoJogo):
         elif self.y_pos + self.altura < other_body.y_pos:
             return False
         
-        if self.x_pos > other_body.x_pos + other_body.peso:
+        if self.x_pos > other_body.x_pos + other_body.largura:
             return False
-        elif self.x_pos + self.peso < other_body.x_pos:
+        elif self.x_pos + self.largura < other_body.x_pos:
             return False
 
         return True
@@ -192,13 +192,13 @@ class CarroCharacter(GameObject):
         # Quantas peças o carro se move por segundo
         SPEED = 10
 
-        def __init__(self, image_path, x, y, peso, altura:
-            super().__init__(image_path, x, y, peso, altura)
+        def __init__(self, image_path, x, y, largura, altura):
+            super().__init__(image_path, x, y, largura, altura)
 
         # A função Mover irá mover o carro para a direita e esquerda automaticamente
-        def move(self, max_peso):
+        def move(self, max_largura):
             if self.x_pos <= 20:
                 self.SPEED = abs(self.SPEED)
-            elif self.x_pos >= max_peso - 40:
+            elif self.x_pos >= max_largura - 40:
                 self.SPEED = -abs(self.SPEED)
             self.x_pos += self.SPEED
