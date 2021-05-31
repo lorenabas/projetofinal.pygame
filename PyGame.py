@@ -40,21 +40,21 @@ class Game:
         direction = 0
 
         player_character = PlayerCharacter('personagem_m.png', 375, 700, 50, 50)
-        carro_0 = Carro('carro_dp.png', 20, 600, 50, 50)
+        carro_0 = CarroCharacter('carro_dp.png', 20, 600, 50, 50)
 
         # aumento de velocidade
         carro_0.SPEED *= level_speed
 
         # criação de outro carro
-        carro_1 = Carro('carro_pf.png', self.width - 40, 400, 50, 50)
+        carro_1 = CarroCharacter('carro_pf.png', self.width - 40, 400, 50, 50)
         carro_1.SPEED *= level_speed
 
         # criação de outro carro
-        carro_2 = Carro('carro_pi.png', 20,200, 50, 50)
+        carro_2 = CarroCharacter('carro_pi.png', 20,200, 50, 50)
         carro_2.SPEED *= level_speed
       
-        diploma = Diploma('diploma.png', 375, 50, 50, 50)
-        chapeu = Chapeu('chapeu_formatura.png', 375, 50, 50)
+        diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
+        chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
@@ -133,7 +133,7 @@ class Game:
                 return
 
 # Cria classe de elemento do jogo para definir outras classes dos outros elementos do jogo
-class ElementoJogo:
+class Elementojogo:
 
     def __init__(self, image_path, x, y, largura, altura):
         # Importar a imagem e ajustar o tamanho da imagem
@@ -151,7 +151,7 @@ class ElementoJogo:
         background.blit(self.imagem, (self.x_pos, self.y_pos))
 
 # Cria classe da personagem do jogador
-class PlayerCharacter(ElementoJogo):
+class PlayerCharacter(Elementojogo):
 
     # Quantos espaços/quadrados o personagem se mexe por segundo
     SPEED = 10
@@ -185,7 +185,7 @@ class PlayerCharacter(ElementoJogo):
 
         return True
 # Classe para representar os carros não controlados pelo jogador
-class CarroCharacter(GameObject):
+class CarroCharacter(Elementojogo):
     # Quantas peças o carro se move por segundo
     SPEED = 10
     def __init__(self, image_path, x, y, largura, altura):
