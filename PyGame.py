@@ -184,5 +184,17 @@ class PlayerCharacter(ElementoJogo):
             return False
 
         return True
+# Classe para representar os carros não controlados pelo jogador
+class CarroCharacter(GameObject):
+    # Quantas peças o carro se move por segundo
+    SPEED = 10
+    def __init__(self, image_path, x, y, largura, altura):
 
-
+    super().__init__(image_path, x, y, largura, altura)
+    # A função Mover irá mover o carro para a direita e esquerda automaticamente
+    def move(self, max_largura):
+        if self.x_pos <= 20:
+            self.SPEED = abs(self.SPEED)
+        elif self.x_pos >= max_largura - 40:
+            self.SPEED = -abs(self.SPEED)
+        self.x_pos += self.SPEED
