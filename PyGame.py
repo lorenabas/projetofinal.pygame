@@ -46,7 +46,7 @@ class Game:
         carro_0.SPEED *= level_speed
 
         # criação de outro carro
-        carro_1 = CarroCharacter('carro_pf.png', self.largura - 40, 400, 50, 50)
+        carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 50, 50)
         carro_1.SPEED *= level_speed
 
         # criação de outro carro
@@ -74,6 +74,8 @@ class Game:
                     if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                         direction = 0
                 print(event)
+               
+                   
 
             # Refaz o plano de fundo
             self.game_screen.fill(WHITE_COLOR)
@@ -214,13 +216,30 @@ class CarroCharacter(Elementojogo):
     SPEED = 1
     def __init__(self, image_path, x, y, largura, altura):
         super().__init__(image_path, x, y, largura, altura)
-    # A função Mover irá mover o carro para a direita e esquerda automaticamente
+    # A função Mover irá mover o carro para a direita e ao chegar no final da tela voltar para o começo
     def move(self, max_largura):
         if self.x_pos <= 20:
             self.SPEED = abs(self.SPEED)
         elif self.x_pos >= max_largura - 40:
             self.SPEED = -abs(self.SPEED)
+            self.x_pos = 20
         self.x_pos += self.SPEED
+
+# Classe para representar os carros não controlados pelo jogador (carro 1)
+class CarroCharacter2(Elementojogo):
+    # Quantas peças o carro se move por segundo
+    SPEED = 1
+    def __init__(self, image_path, x, y, largura, altura):
+        super().__init__(image_path, x, y, largura, altura)
+    # A função Mover irá mover o carro para a esquerda automaticamente e ao chegar no final da tela voltar par o começo
+    def move(self, max_largura):
+        if self.x_pos >= max_largura - 40:
+            self.SPEED = -abs(self.SPEED)
+        elif self.x_pos <= 20:
+            self.SPEED = abs(self.SPEED)
+            self.x_pos = max_largura - 40
+        self.x_pos += self.SPEED
+        
 # Inicializa pygame
 pygame.init()
 
