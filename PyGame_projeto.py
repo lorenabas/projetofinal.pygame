@@ -60,6 +60,10 @@ class Game:
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
+        arbusto1 = Elementojogo('arbusto.png', 375, 50, 50, 50)
+        arbusto2 = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
+        arbusto3 = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
+
         pygame.mixer.music.play(loops=-1)
         start_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
         # Loop principal, atualiza o jogo até que is_game_over = True
@@ -88,6 +92,11 @@ class Game:
             # desenha o diploma e o chapeu
             diploma.draw(self.game_screen)
             chapeu.draw(self.game_screen)
+
+            # desenha dos arbustos
+            arbusto1.draw(self.game_screen)
+            arbusto2.draw(self.game_screen)
+            arbusto3.draw(self.game_screen)
         
             # muda a posição do jogador
             player_character.movimento(direction, self.largura)
@@ -129,6 +138,30 @@ class Game:
                 game_over = True
                 ganhou = False
                 text = font.render('You Lose!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
+            elif player_character.verifica_colisao(arbusto1):
+                game_over = True
+                ganhou = True
+                text = font.render('You Win!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
+            elif player_character.verifica_colisao(arbusto2):
+                game_over = True
+                ganhou = True
+                text = font.render('You Win!', True, BLACK_COLOR)
+                self.game_screen.blit(text, (275, 350))
+                pygame.display.update()
+                clock.tick(1)
+                break
+            elif player_character.verifica_colisao(arbusto3):
+                game_over = True
+                ganhou = True
+                text = font.render('You Win!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
