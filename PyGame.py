@@ -40,17 +40,17 @@ class Game:
         direction = 0
 
         player_character = PlayerCharacter('personagem_m.png', 375, 700, 50, 50)
-        carro_0 = CarroCharacter('carro_dp.png', 20, 600, 50, 50)
+        carro_0 = CarroCharacter('carro_dp.png', 20, 600, 140, 80)
 
         # aumento de velocidade
         carro_0.SPEED *= level_speed
 
         # criação de outro carro
-        carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 50, 50)
+        carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 140, 80)
         carro_1.SPEED *= level_speed
 
         # criação de outro carro
-        carro_2 = CarroCharacter('carro_pi.png', 20,200, 50, 50)
+        carro_2 = CarroCharacter('carro_pi.png', 20,200, 140, 80)
         carro_2.SPEED *= level_speed
       
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
