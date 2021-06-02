@@ -180,7 +180,7 @@ class Elementojogo:
 class PlayerCharacter(Elementojogo):
 
     # Quantos espaços/quadrados o personagem se mexe por segundo
-    SPEED = 10
+    SPEED = 5
 
     def __init__(self, image_path, x, y, largura, altura):
         super().__init__(image_path, x, y, largura, altura)
