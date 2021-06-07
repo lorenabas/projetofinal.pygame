@@ -330,13 +330,57 @@ class CarroCharacter2(Elementojogo):
             self.SPEED = abs(self.SPEED)
             self.x_pos = max_largura - 40
         self.x_pos += self.SPEED
-        
-# Inicializa pygame
-pygame.init()
 
-new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT)
-new_game.run_game_loop(1)
+# Verifica o estado do jogo
+class EstadoJogo(Enum):
+    QUIT = -1
+    TITLE = 0
+    NEWGAME = 1
 
-# Sai do jogo
-pygame.quit()
-quit()
+def principal():
+    # Inicializa pygame
+    pygame.init()
+
+    tela = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+    estado_jogo = EstadoJogo.TITLE
+
+    while True:
+        if estado_jogo == EstadoJogo.TITLE:
+            estado_jogo = menu_inicial(tela)
+
+        if estado_jogo == EstadoJogo.NEWGAME:
+            estado_jogo = fase_jogo(tela)
+            
+            # Sai do Jogo
+        if estado_jogo == EstadoJogo.QUIT:
+            pygame.quit()
+            return
+
+
+    #new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT)
+    #new_game.run_game_loop(1)
+
+def menu_inicial(tela):
+    botao_iniciar = Elemento(posicao_central=(400, 400), tamanho_texto= 30, cor_fundo=BLUE_COLOR, cor_texto=WHITE_COLOR, texto='COMEÇAR', acao= EstadoJogo.NEWGAME)
+
+    botao_sair = Elemento(posicao_central=(400, 500), tamanho_texto= 30, cor_fundo=BLUE_COLOR, cor_texto=WHITE_COLOR, texto='SAIR', acao= EstadoJogo.QUIT)
+
+    botoes = [botao_iniciar, botao_sair]
+
+    while True:
+        mouse_up =  False
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and event.botao == 1:
+                mouse_up = True
+
+        tela.fill(BLUE_COLOR)
+
+        for botao in botoes:
+            acao_elemento = botao.update(pygame.mouse.get_pos(), mouse_up)
+            if acao_elemento is not None:
+                return acao_elemento
+            botao.draw(tela)
+
+        pygame.display.flip()       
+
+#quit()
