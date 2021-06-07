@@ -1,18 +1,77 @@
 #Acessar a biblioteca do pygame
 import pygame
+import pygame.freetype
+from pygame.sprite import Sprite
+from pygame.rect import Rect
+from enum import Enum
+from pygame.sprite import RenderUpdates
 
 #Tamanho da tela
-SCREEN_TITLE = 'Crossy RPG' 
+SCREEN_TITLE = 'Crossy Insper' 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
+
 #Cores
 WHITE_COLOR = (255, 255, 255)
 BLACK_COLOR = (0, 0, 0)
+BLUE_COLOR = (106, 159, 181)
+GREEN_COLOR = (124,252,0)
+
 #Tempo
 clock = pygame.time.Clock()
 # Fonte para o texto do jogo
 pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
+
+# Menu Inicial
+def cria_superficie_com_texto(texto, tamanho_texto, cor_texto, cor_fundo):
+    # Retorna superfície com texto escrito
+    fonte_letra = pygame.freetype.SysFont("Courier", tamanho_texto, bold=True)
+    superficie, _ = fonte_letra.render(text = texto, fgcolor = cor_texto, bgcolor = cor_fundo)
+    return superficie.convert_alpha()
+
+class Elemento(Sprite):
+    # Um elemento que pode ser adicionado a uma superfície
+    def __init__(self, posicao_central, texto, tamanho_texto, cor_fundo, cor_texto, acao = None):
+        
+        # Mouse_over = o mouse está em cima do objeto
+        self.mouse_over = False
+
+        imagem_base = cria_superficie_com_texto(texto = texto, tamanho_texto = tamanho_texto, cor_texto = cor_texto, cor_fundo = cor_fundo)
+
+        imagem_destacada = cria_superficie_com_texto(texto = texto, tamanho_texto = tamanho_texto*1.2, cor_texto = cor_texto, cor_fundo = cor_fundo)
+
+        self.imagens = [imagem_base, imagem_destacada]
+
+        self.rects = [imagem_base.get_rect(center = posicao_central), imagem_destacada.get_rect(center = posicao_central),]
+
+        self.acao = acao
+
+        super().__init__()
+
+    #Cria Propriedade
+    @property
+    def imagem(self):
+        return self.imagens[1] if self.mouse_over else self.imagens[0]
+
+    @property
+    def rect(self):
+        return self.rects[1] if self.mouse_over else self.rects[0]
+
+    def update(self, mouse_pos, mouse_up):
+        # Dá update na variável mouse_over e devolve a ação do botão quando ele é clicado
+
+        if self.rect.collidepoint(mouse_pos):
+            self.mouse_over = True
+            # Se o botão é clicado e largado/solto
+            if mouse_up:
+                return self.acao
+        else:
+            self.mouse_over = False
+    
+    def draw(self, superficie):
+        # Desenha o elemento na superfície
+        superficie.blit(self.imagem, self.rect)
 
 class Game:
     #FPS
