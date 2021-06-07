@@ -116,9 +116,9 @@ class Game:
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
-        arbusto1 = Elementojogo('arbusto.jpg', 110, 50, 50, 50)
-        arbusto2 = Elementojogo('arbusto.jpg', 70, 100, 50, 50)
-        arbusto3 = Elementojogo('arbusto.jpg', 200, 150, 50, 50)
+        arbusto1 = Elementojogo('arbusto.jpg', 90, 300, 50, 50)
+        arbusto2 = Elementojogo('arbusto.jpg', 300, 500, 50, 50)
+        arbusto3 = Elementojogo('arbusto.jpg', 500, 150, 50, 50)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
