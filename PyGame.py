@@ -97,6 +97,7 @@ class Game:
         game_over = False
         ganhou = False
         direction = 0
+        direction2 = 0
 
         player_character = PlayerCharacter('personagem_m.png', 375, 700, 50, 50)
         carro_0 = CarroCharacter('carro_pi.png', 20, 600, 140, 80)
@@ -128,10 +129,18 @@ class Game:
                     # Mexe para baixo se a seta para baixo está sendo apertada
                     elif event.key == pygame.K_DOWN:
                         direction = -1
+                    # Mexe para direira se a seta para cima está sendo apertada
+                    if event.key == pygame.K_RIGHT:
+                        direction2 = -1
+                    # Mexe para esquerda se a seta para baixo está sendo apertada
+                    elif event.key == pygame.K_LEFT:
+                        direction2 = 1
                 # Verifica quando a tecla deixa é solta
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                         direction = 0
+                    if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
+                        direction2 = 0
                 print(event)
                
                    
@@ -146,6 +155,7 @@ class Game:
         
             # muda a posição do jogador
             player_character.movimento(direction, self.largura)
+            player_character.movimento2(direction2, self.largura)
             # coloca o jogador na nova posição
             player_character.draw(self.game_screen)
 
@@ -244,6 +254,7 @@ class PlayerCharacter(Elementojogo):
     def __init__(self, image_path, x, y, largura, altura):
         super().__init__(image_path, x, y, largura, altura)
 
+
     # Função para mexer a personagem - vai para cima se a direção > 0, e para baixo se a direção for < 0
     def movimento(self, direction, max_altura):
         if direction > 0:
@@ -254,7 +265,21 @@ class PlayerCharacter(Elementojogo):
         # Verifica que a personagem não sai da tela
         if self.y_pos >= max_altura - 40:
             self.y_pos = max_altura -40
+        
+    # Função para mexer a personagem - vai para cima se a direção > 0, e para baixo se a direção for < 0
+    def movimento2(self, direction2, max_largura):
+        if direction2 > 0:
+            self.x_pos -= self.SPEED
+        elif direction2 < 0:
+            self.x_pos += self.SPEED
+
+        # Verifica que a personagem não sai da tela
+        if self.x_pos >= max_largura - 40:
+            self.x_pos = max_largura -40
+        
     
+
+
     # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
     # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
     def verifica_colisao(self, other_body):
