@@ -54,15 +54,16 @@ class Game:
         carro_1.SPEED *= level_speed
 
         # criação de outro carro
+    
         carro_2 = CarroCharacter('carro_pi.png', 20,200, 50, 50)
         carro_2.SPEED *= level_speed
       
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
-        arbusto1 = Elementojogo('arbusto.jpg', 375, 50, 50, 50)
-        arbusto2 = Elementojogo('arbusto.jpg', 375, 50, 50, 50)
-        arbusto3 = Elementojogo('arbusto.jpg', 375, 50, 50, 50)
+        arbusto1 = Elementojogo('arbusto.jpg', 110, 50, 50, 50)
+        arbusto2 = Elementojogo('arbusto.jpg', 70, 100, 50, 50)
+        arbusto3 = Elementojogo('arbusto.jpg', 200, 150, 50, 50)
 
         pygame.mixer.music.play(loops=-1)
         start_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
