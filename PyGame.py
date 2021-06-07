@@ -116,6 +116,10 @@ class Game:
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
+        arbusto1 = Elementojogo('arbusto.jpg', 110, 50, 50, 50)
+        arbusto2 = Elementojogo('arbusto.jpg', 70, 100, 50, 50)
+        arbusto3 = Elementojogo('arbusto.jpg', 200, 150, 50, 50)
+
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
             for event in pygame.event.get():
@@ -152,6 +156,9 @@ class Game:
             # desenha o diploma e o chapeu
             diploma.draw(self.game_screen)
             chapeu.draw(self.game_screen)
+            arbusto1.draw(self.game_screen)
+            arbusto2.draw(self.game_screen)
+            arbusto3.draw(self.game_screen)
         
             # muda a posição do jogador
             player_character.movimento(direction, self.largura)
