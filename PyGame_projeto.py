@@ -60,9 +60,9 @@ class Game:
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
-        arbusto1 = Elementojogo('arbusto.png', 375, 50, 50, 50)
-        arbusto2 = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
-        arbusto3 = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
+        arbusto1 = Elementojogo('arbusto.jpg', 375, 50, 50, 50)
+        arbusto2 = Elementojogo('arbusto.jpg', 375, 50, 50, 50)
+        arbusto3 = Elementojogo('arbusto.jpg', 375, 50, 50, 50)
 
         pygame.mixer.music.play(loops=-1)
         start_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
