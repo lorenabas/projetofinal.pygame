@@ -1,9 +1,6 @@
 #Acessar a biblioteca do pygame
 import pygame
 import pygame.freetype
-from pygame.sprite import Sprite
-from pygame.rect import Rect
-from enum import Enum
 from config import SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE_COLOR, BLACK_COLOR, BLUE_COLOR 
 from pathlib import Path
 
@@ -310,11 +307,24 @@ class PlayerCharacter(Elementojogo):
             return False
 
         return True
+    
+    def verifica_colisao2(self, other_body):
+        if self.y_pos > other_body.y_pos + other_body.altura/2:
+            return False
+        elif self.y_pos + self.altura/2 < other_body.y_pos:
+            return False
+        
+        if self.x_pos > other_body.x_pos + other_body.largura/2:
+            return False
+        elif self.x_pos + self.largura/2 < other_body.x_pos:
+            return False
+
+        return True
 
     def verifica_colisoes(self, lista_corpos):
         l_boolean = []
         for i in lista_corpos:
-            l_boolean.append(self.verifica_colisao(i))
+            l_boolean.append(self.verifica_colisao2(i))
         
         return l_boolean
 
