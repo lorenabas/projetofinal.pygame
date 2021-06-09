@@ -66,18 +66,19 @@ class Game:
         direction = 0
         direction2 = 0
 
+        #nome da imagem, posicao no eixo x, posicao no eixo y, largura, altura
         player_character = PlayerCharacter('personagem_m.png', 375, 700, 50, 50)
-        carro_0 = CarroCharacter('carro_pi.png', 20, 600, 140, 80)
+        carro_0 = CarroCharacter('carro_pi.png', 20, 580, 140, 90)
 
         # aumento de velocidade
         carro_0.SPEED *= level_speed
 
         # criação de outro carro
-        carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 140, 80)
+        carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 380, 140, 80)
         carro_1.SPEED *= level_speed
 
         # criação de outro carro
-        carro_2 = CarroCharacter('carro_dp.png', 20,200, 140, 80)
+        carro_2 = CarroCharacter('carro_dp.png',20,160, 140, 90)
         carro_2.SPEED *= level_speed
 
     
@@ -86,9 +87,9 @@ class Game:
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
         # posicao na tela, largura, altura do objeto
-        arbusto1 = Elementojogo('arbusto1.png.png', 90, 300, 70, 70)
-        arbusto2 = Elementojogo('arbusto1.png.png', 300, 500, 70, 70)
-        arbusto3 = Elementojogo('arbusto1.png.png', 500, 150, 70, 70)
+        arbusto1 = Elementojogo('arbusto1.png.png', 370, 300, 70, 70)
+        arbusto2 = Elementojogo('arbusto1.png.png', 200, 510, 70, 70)
+        arbusto3 = Elementojogo('arbusto1.png.png', 500, 90, 70, 70)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
@@ -200,23 +201,23 @@ class Game:
                 i_arbusto = (player_character.verifica_colisoes([arbusto1, arbusto2, arbusto3])).index(True)
                 print(player_character.SPEED)
                 if i_arbusto == 0:
-                    x = 90
+                    x = 370
                     y = 300
                 elif i_arbusto == 1:
-                    x = 300
-                    y = 500
+                    x = 200
+                    y = 510
                 elif i_arbusto == 2:
                     x = 500
-                    y = 150
+                    y = 90
 
                 if direction < 0:
-                    player_character.y_pos = y-40
+                    player_character.y_pos = y-35
                 elif direction > 0:
-                    player_character.y_pos = y+40
+                    player_character.y_pos = y+35
                 elif direction2 < 0:
-                    player_character.x_pos = x-40
+                    player_character.x_pos = x-35
                 elif direction2 > 0:
-                    player_character.x_pos = x+40
+                    player_character.x_pos = x+35
                 
               
             # atualizar todos os gráficos do jogo
@@ -289,14 +290,14 @@ class PlayerCharacter(Elementojogo):
     # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
     # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
     def verifica_colisao(self, other_body):
-        if self.y_pos > other_body.y_pos + other_body.altura/2:
+        if self.y_pos > other_body.y_pos + ((3*other_body.altura)/4):
             return False
-        elif self.y_pos + self.altura/2 < other_body.y_pos:
+        elif self.y_pos + ((3*self.altura)/4) < other_body.y_pos:
             return False
         
-        if self.x_pos > other_body.x_pos + other_body.largura/2:
+        if self.x_pos > other_body.x_pos + ((3*other_body.largura)/4):
             return False
-        elif self.x_pos + self.largura/2 < other_body.x_pos:
+        elif self.x_pos + ((3*self.largura)/4) < other_body.x_pos:
             return False
 
         return True
