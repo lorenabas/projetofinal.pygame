@@ -15,7 +15,7 @@ pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
 
 # Carrega os sons do jogo
-pygame.mixer.music.load('assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
+pygame.mixer.music.load('Música inicial.mp3')
 pygame.mixer.music.set_volume(0.4)
 
 class Game:
@@ -181,7 +181,7 @@ class Game:
                 text = font.render('You Lose!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
-                end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
+                end_sound = pygame.mixer.Sound('Colisão.mp3')
                 clock.tick(1)
                 break
 
