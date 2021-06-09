@@ -4,8 +4,7 @@ import pygame.freetype
 from pygame.sprite import Sprite
 from pygame.rect import Rect
 from enum import Enum
-
-from config import SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE_COLOR, BLACK_COLOR, BLUE_COLOR, GREEN_COLOR, 
+from config import SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE_COLOR, BLACK_COLOR, BLUE_COLOR 
 
 #Tempo
 clock = pygame.time.Clock()
@@ -14,9 +13,10 @@ pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
 
 class Game:  
-    
+
     #Inicializador para classe de jogo para configurar largura, altura e título
-    def __init__(self, image_path, título, largura, altura):
+    def __init__(self, image_path, título, largura, altura, FPS):
+        self.FPS = FPS
         self.título = título
         self.altura = altura
         self.largura = largura
@@ -27,9 +27,29 @@ class Game:
         self.game_screen.fill(WHITE_COLOR)
         pygame.display.set_caption(título)
 
+    
         # Carregar e definir a imagem de fundo
         background_image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(background_image, (largura, altura))
+        self.init_screen(self.game_screen)
+
+    def init_screen(self, tela):
+        running = True
+        while running:
+
+            clock.tick(FPS)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                    
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.run_game_loop(1)
+                    running = False
+
+            tela.fill(BLUE_COLOR)
+
+            pygame.display.flip()
 
     def run_game_loop(self, level_speed):
         game_over = False
@@ -43,23 +63,19 @@ class Game:
         # aumento de velocidade
         carro_0.SPEED *= level_speed
 
-        # criação de outro carro
-        carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 140, 80)
-        carro_1.SPEED *= level_speed
-
-        # criação de outro carro
-        carro_2 = CarroCharacter('carro_dp.png', 20,200, 140, 80)
-        carro_2.SPEED *= level_speed
+    
       
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
+        # posicao na tela, largura, altura do objeto
         arbusto1 = Elementojogo('arbusto.jpg', 90, 300, 50, 50)
         arbusto2 = Elementojogo('arbusto.jpg', 300, 500, 50, 50)
         arbusto3 = Elementojogo('arbusto.jpg', 500, 150, 50, 50)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
+            print('1')
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_over = True
@@ -83,7 +99,6 @@ class Game:
                         direction = 0
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
                         direction2 = 0
-                print(event)
                
                    
 
@@ -110,9 +125,15 @@ class Game:
         
             # adcionar novos carros
             if level_speed > 2:
+                 # criação de outro carro
+                carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 140, 80)
+                carro_1.SPEED *= level_speed
                 carro_1.move(self.largura)
                 carro_1.draw(self.game_screen)
             if level_speed > 4:
+                 # criação de outro carro
+                carro_2 = CarroCharacter('carro_dp.png', 20,200, 140, 80)
+                carro_2.SPEED *= level_speed
                 carro_2.move(self.largura)
                 carro_2.draw(self.game_screen)
 
@@ -127,22 +148,24 @@ class Game:
                 pygame.display.update()
                 clock.tick(1)
                 break
-            elif player_character.verifica_colisao(carro_1):
-                game_over = True
-                ganhou = False
-                text = font.render('You Lost!', True, BLACK_COLOR)
-                self.game_screen.blit(text, (275, 350))
-                pygame.display.update()
-                clock.tick(1)
-                break
-            elif player_character.verifica_colisao(carro_2):
-                game_over = True
-                ganhou = False
-                text = font.render('You Lost!', True, BLACK_COLOR)
-                self.game_screen.blit(text, (275, 350))
-                pygame.display.update()
-                clock.tick(1)
-                break
+            elif level_speed > 2:
+                if player_character.verifica_colisao(carro_1):
+                    game_over = True
+                    ganhou = False
+                    text = font.render('You Lost!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    break
+            elif level_speed > 4:
+                if player_character.verifica_colisao(carro_2):
+                    game_over = True
+                    ganhou = False
+                    text = font.render('You Lost!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    break
             elif player_character.verifica_colisao(diploma):
                 game_over = True
                 ganhou = True
@@ -159,6 +182,30 @@ class Game:
                 pygame.display.update()
                 clock.tick(1)
                 break
+            elif any(player_character.verifica_colisoes([arbusto1, arbusto2, arbusto3])):
+                i_arbusto = (player_character.verifica_colisoes([arbusto1, arbusto2, arbusto3])).index(True)
+                print(player_character.SPEED)
+                if i_arbusto == 0:
+                    x = 90
+                    y = 300
+                elif i_arbusto == 1:
+                    x = 300
+                    y = 500
+                elif i_arbusto == 2:
+                    x = 500
+                    y = 150
+
+                if direction < 0:
+                    player_character.y_pos = y-30
+                elif direction > 0:
+                    player_character.y_pos = y+30
+                elif direction2 < 0:
+                    player_character.x_pos = x-30
+                elif direction2 > 0:
+                    player_character.x_pos = x+30
+                
+              
+
 
             # atualizar todos os gráficos do jogo
             pygame.display.update()
@@ -210,8 +257,10 @@ class PlayerCharacter(Elementojogo):
         # Verifica que a personagem não sai da tela
         if self.y_pos >= max_altura - 40:
             self.y_pos = max_altura -40
+        elif self.y_pos <= 0:
+            self.y_pos = 40
         
-    # Função para mexer a personagem - vai para cima se a direção > 0, e para baixo se a direção for < 0
+    # Função para mexer a personagem - vai para esquerda se a direção2 > 0, e para direita se a direção2 for < 0
     def movimento2(self, direction2, max_largura):
         if direction2 > 0:
             self.x_pos -= self.SPEED
@@ -221,22 +270,32 @@ class PlayerCharacter(Elementojogo):
         # Verifica que a personagem não sai da tela
         if self.x_pos >= max_largura - 40:
             self.x_pos = max_largura -40
+        elif self.x_pos <= 0:
+            self.x_pos = 20
         
     
     # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
     # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
     def verifica_colisao(self, other_body):
-        if self.y_pos > other_body.y_pos + other_body.altura:
+        if self.y_pos > other_body.y_pos + other_body.altura/2:
             return False
-        elif self.y_pos + self.altura < other_body.y_pos:
+        elif self.y_pos + self.altura/2 < other_body.y_pos:
             return False
         
-        if self.x_pos > other_body.x_pos + other_body.largura:
+        if self.x_pos > other_body.x_pos + other_body.largura/2:
             return False
-        elif self.x_pos + self.largura < other_body.x_pos:
+        elif self.x_pos + self.largura/2 < other_body.x_pos:
             return False
 
         return True
+
+    def verifica_colisoes(self, lista_corpos):
+        l_boolean = []
+        for i in lista_corpos:
+            l_boolean.append(self.verifica_colisao(i))
+        
+        return l_boolean
+
 # Classe para representar os carros não controlados pelo jogador
 class CarroCharacter(Elementojogo):
     # Quantas peças o carro se move por segundo
@@ -270,8 +329,8 @@ class CarroCharacter2(Elementojogo):
 
 pygame.init()
 
-new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT) 
-new_game.run_game_loop(1)
+new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS) 
+#new_game.run_game_loop(1)
 
 pygame.quit()
 quit()
