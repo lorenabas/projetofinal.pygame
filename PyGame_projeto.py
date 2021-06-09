@@ -66,7 +66,6 @@ class Game:
         arbusto3 = Elementojogo('arbusto.jpg', 200, 150, 50, 50)
 
         pygame.mixer.music.play(loops=-1)
-        start_sound = pygame.mixer.Sound('assets/snd/expl6.wav')
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
             for event in pygame.event.get():
