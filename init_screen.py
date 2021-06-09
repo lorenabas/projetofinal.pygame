@@ -7,8 +7,6 @@ from config import SCREEN_WIDTH, SCREEN_HEIGHT, BLUE_COLOR, FPS, QUIT, GAME
 def init_screen(tela):
     clock = pygame.time.Clock()
 
-    screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-
     running = True
     while running:
 
@@ -23,7 +21,7 @@ def init_screen(tela):
                 state = GAME
                 running = False
 
-        screen.fill(BLUE_COLOR)
+        tela.fill(BLUE_COLOR)
 
         pygame.display.flip()
     

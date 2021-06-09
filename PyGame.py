@@ -5,12 +5,21 @@ from pygame.sprite import Sprite
 from pygame.rect import Rect
 from enum import Enum
 from config import SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE_COLOR, BLACK_COLOR, BLUE_COLOR 
+from pathlib import Path
+
+base = Path(__file__).parent
 
 #Tempo
 clock = pygame.time.Clock()
 # Fonte para o texto do jogo
 pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
+pygame.mixer.init()
+
+# Carrega os sons do jogo
+pygame.mixer.music.load(f'{base}/assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
+pygame.mixer.music.set_volume(0.4)
+
 
 class Game:  
 
@@ -62,6 +71,14 @@ class Game:
 
         # aumento de velocidade
         carro_0.SPEED *= level_speed
+
+        # criação de outro carro
+        carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 140, 80)
+        carro_1.SPEED *= level_speed
+
+        # criação de outro carro
+        carro_2 = CarroCharacter('carro_dp.png', 20,200, 140, 80)
+        carro_2.SPEED *= level_speed
 
     
       
@@ -125,15 +142,9 @@ class Game:
         
             # adcionar novos carros
             if level_speed > 2:
-                 # criação de outro carro
-                carro_1 = CarroCharacter2('carro_pf.png', self.largura - 40, 400, 140, 80)
-                carro_1.SPEED *= level_speed
                 carro_1.move(self.largura)
                 carro_1.draw(self.game_screen)
             if level_speed > 4:
-                 # criação de outro carro
-                carro_2 = CarroCharacter('carro_dp.png', 20,200, 140, 80)
-                carro_2.SPEED *= level_speed
                 carro_2.move(self.largura)
                 carro_2.draw(self.game_screen)
 
@@ -147,6 +158,7 @@ class Game:
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
+                #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
                 break
             elif level_speed > 2:
                 if player_character.verifica_colisao(carro_1):
@@ -156,6 +168,7 @@ class Game:
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
                     clock.tick(1)
+                    #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
                     break
             elif level_speed > 4:
                 if player_character.verifica_colisao(carro_2):
@@ -164,9 +177,10 @@ class Game:
                     text = font.render('You Lost!', True, BLACK_COLOR)
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
+                    #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
                     clock.tick(1)
                     break
-            elif player_character.verifica_colisao(diploma):
+            if player_character.verifica_colisao(diploma):
                 game_over = True
                 ganhou = True
                 text = font.render('You Won!', True, BLACK_COLOR)
@@ -205,8 +219,6 @@ class Game:
                     player_character.x_pos = x+30
                 
               
-
-
             # atualizar todos os gráficos do jogo
             pygame.display.update()
             # Clique no relógio para atualizar tudo dentro do jogo
