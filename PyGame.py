@@ -161,7 +161,7 @@ class Game:
                 clock.tick(1)
                 #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
                 break
-            elif level_speed > 2:
+            elif level_speed > 2 and level_speed < 4:
                 if player_character.verifica_colisao(carro_1):
                     game_over = True
                     ganhou = False
@@ -172,7 +172,16 @@ class Game:
                     #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
                     break
             elif level_speed > 4:
-                if player_character.verifica_colisao(carro_2):
+                if player_character.verifica_colisao(carro_1):
+                    game_over = True
+                    ganhou = False
+                    text = font.render('You Lost!', True, BLACK_COLOR)
+                    self.game_screen.blit(text, (275, 350))
+                    pygame.display.update()
+                    clock.tick(1)
+                    #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
+                    break
+                elif player_character.verifica_colisao(carro_2):
                     game_over = True
                     ganhou = False
                     text = font.render('You Lost!', True, BLACK_COLOR)
@@ -211,13 +220,13 @@ class Game:
                     y = 90
 
                 if direction < 0:
-                    player_character.y_pos = y-35
+                    player_character.y_pos = y-40
                 elif direction > 0:
-                    player_character.y_pos = y+35
+                    player_character.y_pos = y+40
                 elif direction2 < 0:
-                    player_character.x_pos = x-35
+                    player_character.x_pos = x-40
                 elif direction2 > 0:
-                    player_character.x_pos = x+35
+                    player_character.x_pos = x+40
                 
               
             # atualizar todos os gráficos do jogo
