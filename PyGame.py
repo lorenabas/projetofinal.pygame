@@ -17,8 +17,8 @@ font = pygame.font.SysFont('comicsans', 75)
 pygame.mixer.init()
 
 # Carrega os sons do jogo
-pygame.mixer.music.load(f'{base}/assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
-pygame.mixer.music.set_volume(0.4)
+#pygame.mixer.music.load(f'{base}/assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
+#pygame.mixer.music.set_volume(0.4)
 
 
 class Game:  
@@ -86,9 +86,9 @@ class Game:
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
         # posicao na tela, largura, altura do objeto
-        arbusto1 = Elementojogo('arbusto.jpg', 90, 300, 50, 50)
-        arbusto2 = Elementojogo('arbusto.jpg', 300, 500, 50, 50)
-        arbusto3 = Elementojogo('arbusto.jpg', 500, 150, 50, 50)
+        arbusto1 = Elementojogo('arbusto1.png.png', 90, 300, 70, 70)
+        arbusto2 = Elementojogo('arbusto1.png.png', 300, 500, 70, 70)
+        arbusto3 = Elementojogo('arbusto1.png.png', 500, 150, 70, 70)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
@@ -210,13 +210,13 @@ class Game:
                     y = 150
 
                 if direction < 0:
-                    player_character.y_pos = y-30
+                    player_character.y_pos = y-40
                 elif direction > 0:
-                    player_character.y_pos = y+30
+                    player_character.y_pos = y+40
                 elif direction2 < 0:
-                    player_character.x_pos = x-30
+                    player_character.x_pos = x-40
                 elif direction2 > 0:
-                    player_character.x_pos = x+30
+                    player_character.x_pos = x+40
                 
               
             # atualizar todos os gráficos do jogo
@@ -341,7 +341,7 @@ class CarroCharacter2(Elementojogo):
 
 pygame.init()
 
-new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS) 
+new_game = Game('background1.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS) 
 #new_game.run_game_loop(1)
 
 pygame.quit()
