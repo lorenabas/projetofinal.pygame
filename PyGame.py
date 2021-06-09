@@ -4,18 +4,8 @@ import pygame.freetype
 from pygame.sprite import Sprite
 from pygame.rect import Rect
 from enum import Enum
-from pygame.sprite import RenderUpdates
 
-#Tamanho da tela
-SCREEN_TITLE = 'Crossy Insper' 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 800
-
-#Cores
-WHITE_COLOR = (255, 255, 255)
-BLACK_COLOR = (0, 0, 0)
-BLUE_COLOR = (106, 159, 181)
-GREEN_COLOR = (124,252,0)
+from config import SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE_COLOR, BLACK_COLOR, BLUE_COLOR, GREEN_COLOR, 
 
 #Tempo
 clock = pygame.time.Clock()
@@ -23,59 +13,7 @@ clock = pygame.time.Clock()
 pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
 
-# Menu Inicial
-def cria_superficie_com_texto(texto, tamanho_texto, cor_texto, cor_fundo):
-    # Retorna superfície com texto escrito
-    fonte_letra = pygame.freetype.SysFont("Courier", tamanho_texto, bold=True)
-    superficie, _ = fonte_letra.render(text = texto, fgcolor = cor_texto, bgcolor = cor_fundo)
-    return superficie.convert_alpha()
-
-class Elemento(Sprite):
-    # Um elemento que pode ser adicionado a uma superfície
-    def __init__(self, posicao_central, texto, tamanho_texto, cor_fundo, cor_texto, acao = None):
-        
-        # Mouse_over = o mouse está em cima do objeto
-        self.mouse_over = False
-
-        imagem_base = cria_superficie_com_texto(texto = texto, tamanho_texto = tamanho_texto, cor_texto = cor_texto, cor_fundo = cor_fundo)
-
-        imagem_destacada = cria_superficie_com_texto(texto = texto, tamanho_texto = tamanho_texto*1.2, cor_texto = cor_texto, cor_fundo = cor_fundo)
-
-        self.imagens = [imagem_base, imagem_destacada]
-
-        self.rects = [imagem_base.get_rect(center = posicao_central), imagem_destacada.get_rect(center = posicao_central),]
-
-        self.acao = acao
-
-        super().__init__()
-
-    #Cria Propriedade
-    @property
-    def imagem(self):
-        return self.imagens[1] if self.mouse_over else self.imagens[0]
-
-    @property
-    def rect(self):
-        return self.rects[1] if self.mouse_over else self.rects[0]
-
-    def update(self, mouse_pos, mouse_up):
-        # Dá update na variável mouse_over e devolve a ação do botão quando ele é clicado
-
-        if self.rect.collidepoint(mouse_pos):
-            self.mouse_over = True
-            # Se o botão é clicado e largado/solto
-            if mouse_up:
-                return self.acao
-        else:
-            self.mouse_over = False
-    
-    def draw(self, superficie):
-        # Desenha o elemento na superfície
-        superficie.blit(self.imagem, self.rect)
-
-class Game:
-    #FPS
-    FPS = 60    
+class Game:  
     
     #Inicializador para classe de jogo para configurar largura, altura e título
     def __init__(self, image_path, título, largura, altura):
@@ -184,7 +122,7 @@ class Game:
             if player_character.verifica_colisao(carro_0):
                 game_over = True
                 ganhou = False
-                text = font.render('You Lose!', True, BLACK_COLOR)
+                text = font.render('You Lost!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
@@ -192,7 +130,7 @@ class Game:
             elif player_character.verifica_colisao(carro_1):
                 game_over = True
                 ganhou = False
-                text = font.render('You Lose!', True, BLACK_COLOR)
+                text = font.render('You Lost!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
@@ -200,7 +138,7 @@ class Game:
             elif player_character.verifica_colisao(carro_2):
                 game_over = True
                 ganhou = False
-                text = font.render('You Lose!', True, BLACK_COLOR)
+                text = font.render('You Lost!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
@@ -208,7 +146,7 @@ class Game:
             elif player_character.verifica_colisao(diploma):
                 game_over = True
                 ganhou = True
-                text = font.render('You Win!', True, BLACK_COLOR)
+                text = font.render('You Won!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
@@ -216,7 +154,7 @@ class Game:
             elif player_character.verifica_colisao(chapeu):
                 game_over = True
                 ganhou = False
-                text = font.render('You Lose!', True, BLACK_COLOR)
+                text = font.render('You Won!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
@@ -285,8 +223,6 @@ class PlayerCharacter(Elementojogo):
             self.x_pos = max_largura -40
         
     
-
-
     # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
     # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
     def verifica_colisao(self, other_body):
@@ -331,56 +267,11 @@ class CarroCharacter2(Elementojogo):
             self.x_pos = max_largura - 40
         self.x_pos += self.SPEED
 
-# Verifica o estado do jogo
-class EstadoJogo(Enum):
-    QUIT = -1
-    TITLE = 0
-    NEWGAME = 1
 
-def principal():
-    # Inicializa pygame
-    pygame.init()
+pygame.init()
 
-    tela = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-    estado_jogo = EstadoJogo.TITLE
+new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT) 
+new_game.run_game_loop(1)
 
-    while True:
-        if estado_jogo == EstadoJogo.TITLE:
-            estado_jogo = menu_inicial(tela)
-
-        if estado_jogo == EstadoJogo.NEWGAME:
-            estado_jogo = fase_jogo(tela)
-            
-            # Sai do Jogo
-        if estado_jogo == EstadoJogo.QUIT:
-            pygame.quit()
-            return
-
-
-    #new_game = Game('background.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT)
-    #new_game.run_game_loop(1)
-
-def menu_inicial(tela):
-    botao_iniciar = Elemento(posicao_central=(400, 400), tamanho_texto= 30, cor_fundo=BLUE_COLOR, cor_texto=WHITE_COLOR, texto='COMEÇAR', acao= EstadoJogo.NEWGAME)
-
-    botao_sair = Elemento(posicao_central=(400, 500), tamanho_texto= 30, cor_fundo=BLUE_COLOR, cor_texto=WHITE_COLOR, texto='SAIR', acao= EstadoJogo.QUIT)
-
-    botoes = [botao_iniciar, botao_sair]
-
-    while True:
-        mouse_up =  False
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONUP and event.botao == 1:
-                mouse_up = True
-
-        tela.fill(BLUE_COLOR)
-
-        for botao in botoes:
-            acao_elemento = botao.update(pygame.mouse.get_pos(), mouse_up)
-            if acao_elemento is not None:
-                return acao_elemento
-            botao.draw(tela)
-
-        pygame.display.flip()       
-
-#quit()
+pygame.quit()
+quit()
