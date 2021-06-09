@@ -17,9 +17,9 @@ font = pygame.font.SysFont('comicsans', 75)
 pygame.mixer.init()
 
 # Carrega os sons do jogo
-#pygame.mixer.music.load(f'{base}/assets/snd/tgfcoder-FrozenJam-SeamlessLoop.ogg')
-#pygame.mixer.music.set_volume(0.4)
-
+pygame.mixer.music.load(f'{base}\Música inicial.mp3')
+pygame.mixer.music.set_volume(0.4)
+end_sound = pygame.mixer.Sound(f'{base}\Colisão.mp3')
 
 class Game:  
 
@@ -36,7 +36,6 @@ class Game:
         self.game_screen.fill(WHITE_COLOR)
         pygame.display.set_caption(título)
 
-    
         # Carregar e definir a imagem de fundo
         background_image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(background_image, (largura, altura))
@@ -56,7 +55,9 @@ class Game:
                     self.run_game_loop(1)
                     running = False
 
-            tela.fill(BLUE_COLOR)
+            # Cria imagem do menu inicial
+            inicial_image = pygame.image.load('CROSSY INSPER (1).png')
+            self.game_screen.blit(inicial_image, (0, 0))
 
             pygame.display.flip()
 
@@ -81,8 +82,6 @@ class Game:
         carro_2 = CarroCharacter('carro_dp.png',20,160, 140, 90)
         carro_2.SPEED *= level_speed
 
-    
-      
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
@@ -90,6 +89,8 @@ class Game:
         arbusto1 = Elementojogo('arbusto1.png.png', 370, 300, 70, 70)
         arbusto2 = Elementojogo('arbusto1.png.png', 200, 510, 70, 70)
         arbusto3 = Elementojogo('arbusto1.png.png', 500, 90, 70, 70)
+
+        pygame.mixer.music.play(loops=-1)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
@@ -118,8 +119,7 @@ class Game:
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
                         direction2 = 0
                
-                   
-
+                
             # Refaz o plano de fundo
             self.game_screen.fill(WHITE_COLOR)
             self.game_screen.blit(self.image, (0, 0))
@@ -159,7 +159,7 @@ class Game:
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
                 clock.tick(1)
-                #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
+                self.end_sound.play() 
                 break
             elif level_speed > 2 and level_speed < 4:
                 if player_character.verifica_colisao(carro_1):
@@ -169,7 +169,7 @@ class Game:
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
                     clock.tick(1)
-                    #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
+                    self.end_sound.play() 
                     break
             elif level_speed > 4:
                 if player_character.verifica_colisao(carro_1):
@@ -179,7 +179,7 @@ class Game:
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
                     clock.tick(1)
-                    #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
+                    self.end_sound.play() 
                     break
                 elif player_character.verifica_colisao(carro_2):
                     game_over = True
@@ -187,7 +187,7 @@ class Game:
                     text = font.render('You Lost!', True, BLACK_COLOR)
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
-                    #end_sound = pygame.mixer.Sound('assets/snd/pew.wav')
+                    self.end_sound.play() 
                     clock.tick(1)
                     break
             if player_character.verifica_colisao(diploma):
