@@ -1,7 +1,7 @@
 #Acessar a biblioteca do pygame
 import pygame
 import pygame.freetype
-from config import SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE_COLOR, BLACK_COLOR, BLUE_COLOR 
+from config import SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE_COLOR, BLACK_COLOR
 from pathlib import Path
 
 base = Path(__file__).parent
@@ -16,10 +16,10 @@ pygame.mixer.init()
 # Carrega os sons do jogo
 pygame.mixer.music.load(f'{base}\Música inicial.mp3')
 pygame.mixer.music.set_volume(0.4)
-end_sound = pygame.mixer.Sound(f'{base}\Colisão.mp3')
+
 
 class Game:  
-
+    """ A classe Game é responsável pelo loop principal, pela inicialização da janela do jogo, pela função do menu principal """
     #Inicializador para classe de jogo para configurar largura, altura e título
     def __init__(self, image_path, título, largura, altura, FPS):
         self.FPS = FPS
@@ -38,22 +38,24 @@ class Game:
         self.image = pygame.transform.scale(background_image, (largura, altura))
         self.init_screen(self.game_screen)
 
+    #Inicia o menu inicial
     def init_screen(self, tela):
         running = True
         while running:
 
             clock.tick(FPS)
-
+            
             for event in pygame.event.get():
+                #fecha o programa caso a pessoa aperte o botão de sair
                 if event.type == pygame.QUIT:
                     running = False
-                    
+                #inicia o jogo caso a pessoa aperte o mouse    
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.run_game_loop(1)
                     running = False
 
-            # Cria imagem do menu inicial
-            inicial_image = pygame.image.load('CROSSY INSPER (1).png')
+            # Carrega e define imagem de fundo do menu inicial
+            inicial_image = pygame.image.load(f'CROSSY INSPER (1).png')
             self.game_screen.blit(inicial_image, (0, 0))
 
             pygame.display.flip()
@@ -79,20 +81,24 @@ class Game:
         carro_2 = CarroCharacter('carro_dp.png',20,160, 140, 90)
         carro_2.SPEED *= level_speed
 
+        # criação dos elementos de chegada/conclusão da fase
         diploma = Elementojogo('diploma.png', 375, 50, 50, 50)
         chapeu = Elementojogo('chapeu_formatura.png', 375, 50, 50, 50)
 
-        # posicao na tela, largura, altura do objeto
+        # Cria os obstaculos fixos do arbustos
+        # x = Elementojogo(image_path, posicao no eixo x, posicao no eixo y, largura, altura do objeto)
         arbusto1 = Elementojogo('arbusto1.png.png', 370, 300, 70, 70)
         arbusto2 = Elementojogo('arbusto1.png.png', 200, 510, 70, 70)
         arbusto3 = Elementojogo('arbusto1.png.png', 500, 90, 70, 70)
 
+        #Inicializa a música de fundo do jogo
         pygame.mixer.music.play(loops=-1)
 
         # Loop principal, atualiza o jogo até que is_game_over = True
         while not game_over:
             print('1')
             for event in pygame.event.get():
+                #caso a pessoa feche o programa, o jogo acaba
                 if event.type == pygame.QUIT:
                     game_over = True
                 # Verifica se a tecla está apertada
@@ -109,7 +115,7 @@ class Game:
                     # Mexe para esquerda se a seta para baixo está sendo apertada
                     elif event.key == pygame.K_LEFT:
                         direction2 = 1
-                # Verifica quando a tecla deixa é solta
+                # Verifica quando a tecla deixa é solta para que o personagem pare de se movimentar
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                         direction = 0
@@ -131,6 +137,7 @@ class Game:
             # muda a posição do jogador
             player_character.movimento(direction, self.largura)
             player_character.movimento2(direction2, self.largura)
+
             # coloca o jogador na nova posição
             player_character.draw(self.game_screen)
 
@@ -138,7 +145,7 @@ class Game:
             carro_0.move(self.largura)
             carro_0.draw(self.game_screen)
         
-            # adcionar novos carros
+            # move a posição dos novos carros que forma adicionados
             if level_speed > 2:
                 carro_1.move(self.largura)
                 carro_1.draw(self.game_screen)
@@ -148,15 +155,15 @@ class Game:
 
 
             # Termina o jogo se houver colisão entre o jogador e o carro ou diploma e chapeu
-            # Feche o jogo se perder e reinicie o loop do jogo se vencer
+            # Fecha o jogo se perder e reinicie o loop do jogo se vencer
+            # Verifica se o jogador colidiu com algum carro
             if player_character.verifica_colisao(carro_0):
                 game_over = True
                 ganhou = False
                 text = font.render('You Lost!', True, BLACK_COLOR)
                 self.game_screen.blit(text, (275, 350))
                 pygame.display.update()
-                clock.tick(1)
-                self.end_sound.play() 
+                clock.tick(1) 
                 break
             elif level_speed > 2 and level_speed < 4:
                 if player_character.verifica_colisao(carro_1):
@@ -166,7 +173,6 @@ class Game:
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
                     clock.tick(1)
-                    self.end_sound.play() 
                     break
             elif level_speed > 4:
                 if player_character.verifica_colisao(carro_1):
@@ -175,8 +181,7 @@ class Game:
                     text = font.render('You Lost!', True, BLACK_COLOR)
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
-                    clock.tick(1)
-                    self.end_sound.play() 
+                    clock.tick(1)                 
                     break
                 elif player_character.verifica_colisao(carro_2):
                     game_over = True
@@ -184,9 +189,9 @@ class Game:
                     text = font.render('You Lost!', True, BLACK_COLOR)
                     self.game_screen.blit(text, (275, 350))
                     pygame.display.update()
-                    self.end_sound.play() 
                     clock.tick(1)
                     break
+            # verifica se o jogador colidiu com o chapeu ou com o diploma, para que esse passe de nível
             if player_character.verifica_colisao(diploma):
                 game_over = True
                 ganhou = True
@@ -203,6 +208,7 @@ class Game:
                 pygame.display.update()
                 clock.tick(1)
                 break
+            # Verifica se o jogador colidiu com algum arbusto, para que eles funcionem como obstáculos fixos
             elif any(player_character.verifica_colisoes([arbusto1, arbusto2, arbusto3])):
                 i_arbusto = (player_character.verifica_colisoes([arbusto1, arbusto2, arbusto3])).index(True)
                 print(player_character.SPEED)
@@ -215,7 +221,7 @@ class Game:
                 elif i_arbusto == 2:
                     x = 500
                     y = 90
-
+                # Muda a posica do jogador caso ele colida com algum arbusto
                 if direction < 0:
                     player_character.y_pos = y-40
                 elif direction > 0:
@@ -240,7 +246,7 @@ class Game:
 
 # Cria classe de elemento do jogo para definir outras classes dos outros elementos do jogo
 class Elementojogo:
-
+    """ A classe é responsável pela criação dos elementos do jogo, ela vai ser utilizada para a criação/definição de subclasses para elementos do jogo que se movimentam"""
     def __init__(self, image_path, x, y, largura, altura):
         # Importar a imagem e ajustar o tamanho da imagem
         imagem_elemento = pygame.image.load(image_path)
@@ -258,7 +264,7 @@ class Elementojogo:
 
 # Cria classe da personagem do jogador
 class PlayerCharacter(Elementojogo):
-
+    """ Subclasse do personagem do jogo, que vai ser movimentado pelo jogador """
     # Quantos espaços/quadrados o personagem se mexe por segundo
     SPEED = 5
 
@@ -296,6 +302,7 @@ class PlayerCharacter(Elementojogo):
     # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
     # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
     def verifica_colisao(self, other_body):
+        """ Função utilizada para os carros """
         if self.y_pos > other_body.y_pos + ((3*other_body.altura)/4):
             return False
         elif self.y_pos + ((3*self.altura)/4) < other_body.y_pos:
@@ -307,8 +314,11 @@ class PlayerCharacter(Elementojogo):
             return False
 
         return True
-    
+
+    # Retorna que não houve colisão (False) se as posições x e y não se sobrepuserem
+    # Retorna que houve colisão (True) se as posições x e y se sobrepuserem
     def verifica_colisao2(self, other_body):
+        """ Função utilizada para os arbustos """
         if self.y_pos > other_body.y_pos + other_body.altura/2:
             return False
         elif self.y_pos + self.altura/2 < other_body.y_pos:
@@ -322,14 +332,16 @@ class PlayerCharacter(Elementojogo):
         return True
 
     def verifica_colisoes(self, lista_corpos):
+        #Função para verificar a colisão de uma lista de arbustos
         l_boolean = []
         for i in lista_corpos:
             l_boolean.append(self.verifica_colisao2(i))
         
         return l_boolean
 
-# Classe para representar os carros não controlados pelo jogador
+# Classe para representar os carros não controlados pelo jogador (carro_0 e carro_2)
 class CarroCharacter(Elementojogo):
+    """ Subclasse dos obstáculos (carro_0 e carro_2) que não são controlados pelo jogador e se movimentam da esquerda para a direita durante o jogo """
     # Quantas peças o carro se move por segundo
     SPEED = 1
     def __init__(self, image_path, x, y, largura, altura):
@@ -343,8 +355,9 @@ class CarroCharacter(Elementojogo):
             self.x_pos = 20
         self.x_pos += self.SPEED
 
-# Classe para representar os carros não controlados pelo jogador (carro 1)
+# Classe para representar os carros não controlados pelo jogador (carro_1)
 class CarroCharacter2(Elementojogo):
+    """ Subclasse dos obstáculos (carro_1) que não são controlados pelo jogador e se movimentam da direita para a esquerda durante o jogo """
     # Quantas peças o carro se move por segundo
     SPEED = 1
     def __init__(self, image_path, x, y, largura, altura):
@@ -358,11 +371,12 @@ class CarroCharacter2(Elementojogo):
             self.x_pos = max_largura - 40
         self.x_pos += self.SPEED
 
-
+#inicializa o pygame
 pygame.init()
 
+# chama a classe do jogo para que este rode
 new_game = Game('background1.png', SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FPS) 
-#new_game.run_game_loop(1)
 
+# Termina o jogo
 pygame.quit()
 quit()
